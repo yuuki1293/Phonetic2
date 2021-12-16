@@ -3,6 +3,7 @@
 open System.Diagnostics
 open System.Text.RegularExpressions
 open ClosedXML.Excel
+open DocumentFormat.OpenXml.Spreadsheet
 open Microsoft.Win32
 open Phonetic.Config
 open Phonetic.Computation
@@ -39,7 +40,7 @@ let lastRow (workbook:XLWorkbook) =
         return sheet.LastRowUsed().RowNumber()
     }
 
-type Excel(inWorkbook:option<XLWorkbook>,inWorksheet:Option<IXLWorksheet>) =
+type Excel(inWorkbook:option<XLWorkbook>) =
     let workbook = inWorkbook
     let worksheet = inWorkbook >>= getWorksheet
     member _.Open() =
@@ -61,4 +62,15 @@ type Excel(inWorkbook:option<XLWorkbook>,inWorksheet:Option<IXLWorksheet>) =
                 for i in 1 .. row -> sheet.Cell(i,1).Value.ToString() |> removeBracket
             }).ToList()
         }
-    new () = Excel (None,None)
+    member _.Write(phonetic:List<option<string>>)(mean:List<option<string>>) =
+        if worksheet.IsSome && workbook.IsSome then
+            phonetic.Select(fun x index-> [x;mean[index]])
+                .Select(fun x i->
+                    match x[1] with
+                    | Some x -> $"[{x}]"
+                    | None -> "Not Found"
+                    |> worksheet.Value.Cell(i,2).SetValue |> ignore
+                    worksheet.Value.Cell(i,3).SetValue(x)) |> ignore
+            workbook.Value.Save()
+    new () = Excel None
+    new (x:XLWorkbook) = Excel (Some x)
