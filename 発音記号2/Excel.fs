@@ -39,7 +39,7 @@ let lastRow (workbook:XLWorkbook) =
         return sheet.LastRowUsed().RowNumber()
     }
 
-type Excel(inWorkbook:Option<XLWorkbook>,inWorksheet:Option<IXLWorksheet>) =
+type Excel(inWorkbook:option<XLWorkbook>,inWorksheet:Option<IXLWorksheet>) =
     let workbook = inWorkbook
     let worksheet = inWorkbook >>= getWorksheet
     member _.Open() =
@@ -56,8 +56,9 @@ type Excel(inWorkbook:Option<XLWorkbook>,inWorksheet:Option<IXLWorksheet>) =
     member _.Read() =
         maybe{
             let! row = workbook >>= lastRow
-            seq{
-                for i in 1 .. row ->
-            }
+            let! sheet = worksheet
+            return (seq{
+                for i in 1 .. row -> sheet.Cell(i,1).Value.ToString() |> removeBracket
+            }).ToList()
         }
     new () = Excel (None,None)
