@@ -36,7 +36,7 @@ let getWorksheet(workbook:XLWorkbook) =
 let lastRow (workbook:XLWorkbook) =
     maybe{
         let! sheet = getWorksheet workbook
-        sheet.LastRowUsed().RowNumber()
+        return sheet.LastRowUsed().RowNumber()
     }
 
 type Excel(inWorkbook:Option<XLWorkbook>,inWorksheet:Option<IXLWorksheet>) =
