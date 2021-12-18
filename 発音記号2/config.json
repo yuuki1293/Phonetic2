@@ -1,5 +1,6 @@
 {
-  "fileName" : "発音記号2",
+  "fileName" : "発音記号2.xlsx",
   "workSheetName" : "Sheet1",
-  "excelPath" : ""
+  "excelPath" : "",
+  "weblioUrl": "https://ejje.weblio.jp/content/"
 }
