@@ -1,7 +1,6 @@
 ﻿module Phonetic.Web
 
 open System
-open System.Net.Http
 open HtmlAgilityPack
 open Phonetic.Config
 open System.Linq
@@ -14,8 +13,6 @@ let combineUrl (word: string) =
 
 type Web() =
     member _.Read(urls: list<option<string>>) =
-        let wc = new HttpClient()
-
         seq {
             for oUrl in urls ->
                 match oUrl with

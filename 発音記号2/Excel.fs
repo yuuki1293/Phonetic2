@@ -3,11 +3,9 @@
 open System.Diagnostics
 open System.Text.RegularExpressions
 open ClosedXML.Excel
-open DocumentFormat.OpenXml.Spreadsheet
 open Microsoft.Win32
 open Phonetic.Config
 open Phonetic.Computation
-open System.Linq
 open System.IO
 
 let getExePath =

@@ -2,7 +2,6 @@
 
 open System.IO
 open FSharp.Data
-open Phonetic
 
 type ConfigType = JsonProvider<"config.json">
 
